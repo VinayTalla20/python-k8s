@@ -1,5 +1,6 @@
 import os
 import yaml
+import sys
 
 
 conf = input("provide the path of cluster config file: ")
@@ -11,7 +12,9 @@ if (os.access(conf, os.R_OK)):
        print("The path",conf,"has access to the current user",user,"\n")
 
 else:
-       print("user",user,"does not has access instead go with user root or use sudo previlage \n")
+
+    print("user",user,"does not has access instead go with user root or use sudo previlage \n")
+    sys.exit()
 
 
 if(os.path.exists(conf)):
