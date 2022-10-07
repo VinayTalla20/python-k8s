@@ -25,3 +25,17 @@ assert ret.status_code == 200
 
 for i in ret.json()['items']:
     print(i['metadata']['name'])
+    
+    
+    
+"""url = ('https://192.168.2.165:6443/api/v1/namespaces?watch=true')
+s.verify = cert
+ret = s.get( url, stream=True)
+
+assert ret.status_code == 200
+
+for i in ret.iter_lines():
+       i = json.loads(i.decode('utf8'))
+       evt, obj = i['type'], i['object']
+       print(evt, obj['kind'], obj['metadata']['name'])"""
+
