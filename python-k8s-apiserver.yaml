@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: python3-10-6
+  namespace: test
+  labels:
+     version: v1
+     app: python
+spec:
+  serviceAccount: default
+  containers:
+  - name: python-container
+    image: vinaytalla/python-k8s-api:v2
+    command: ["python3", "/src/pod-api-server.py"]
+    env:
+        - name: APISERVER
+          value: https://kubernetes.default.svc.cluster.local
+        - name: CACERT
+          value: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        - name: SERVICE_ACCOUNT
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.serviceAccountName
+        - name: SECRET_NAME
+          valueFrom:
+          downwardAPI:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+                name: secret-sa
+                key: token
+                optional: false
+                
+                
+                
+  ---
+  #secret creation servcie account token(Bearer Token) to access api-server 
+  kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-sa
+  annotations:
+    kubernetes.io/service-account.name: default
+type: kubernetes.io/service-account-token
+EOF
